@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
   address: {
-    street: {
+    streetAddress: {
       type: String,
       maxlength: [50, "Street address can't be longer than 50 character"],
       required: true,
