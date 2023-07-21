@@ -48,8 +48,9 @@ router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     //   find the user on the basis of given email
-    const user = findOneUser({ email });
-    if (user._id) {
+    const user = await findOneUser({ email });
+    console.log(user);
+    if (user?._id) {
       if (user.status !== "active") {
         return res.json({
           status: "error",
@@ -68,12 +69,12 @@ router.post("/login", async (req, res, next) => {
       } else
         return res.json({
           status: "error",
-          message: "password didn't match",
+          message: "Password incorrect !",
         });
     } else
       return res.json({
         status: "error",
-        message: "There is no account registered on the given email",
+        message: "There is no account registered on the email address provided",
       });
   } catch (error) {
     next(error);
