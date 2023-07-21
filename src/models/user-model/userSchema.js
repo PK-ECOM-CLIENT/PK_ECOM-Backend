@@ -1,46 +1,56 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
-  firstName: {
+  status: {
     type: String,
-    maxLength: 50,
-    required: true,
+    default: "inactive",
   },
   firstName: {
     type: String,
-    maxLength: 50,
+    maxLength: [20, "User first name can't be longer than 20 character"],
     required: true,
   },
-  firstName: {
+  lastName: {
     type: String,
-    maxLength: 50,
+    maxLength: [20, "User Last name can't be longer than 20 character"],
     required: true,
   },
-  firstName: {
+  email: {
     type: String,
-    maxLength: 50,
+    unique: true,
+    index: 1,
+    maxLength: [50, "User email address can't be longer than 50 character"],
     required: true,
   },
-  firstName: {
+  phone: {
     type: String,
-    maxLength: 50,
+    maxLength: [10, "Phone number can't be longer than 10 character"],
     required: true,
+  },
+  dob: {
+    type: Date,
+    default: null,
   },
   Address: {
     street: {
       type: String,
+      maxlength: [50, "Street address can't be longer than 50 character"],
       required: true,
     },
-    street: {
+    suburb: {
       type: String,
+      maxlength: [20, "Suburb can't be longer than 20 character"],
       required: true,
     },
-    street: {
+    state: {
       type: String,
+      maxlength: [15, "State can't be longer than 15 character"],
       required: true,
     },
-    street: {
-      type: String,
+    postCode: {
+      type: Number,
+      maxlength: [8, "Postcode can't be longer than 8 character"],
       required: true,
     },
   },
 });
+export default mongoose.model("user", userSchema);
