@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
     maxLength: [50, "User email address can't be longer than 50 character"],
     required: true,
   },
+  emailValidationCode: {
+    type: String,
+    default: "",
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   phone: {
     type: String,
     maxLength: [10, "Phone number can't be longer than 10 character"],
@@ -30,7 +38,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  Address: {
+  address: {
     street: {
       type: String,
       maxlength: [50, "Street address can't be longer than 50 character"],

@@ -1,6 +1,14 @@
 import userSchema from "./userSchema.js";
-export const createUser = () => {};
-export const getSingleUser = () => {};
-export const getAllUsers = () => {};
-export const updateUser = () => {};
-export const deleteUser = () => {};
+export const insertUser = (obj) => {
+  return userSchema(obj).save();
+};
+export const getSingleUser = (_id) => {
+  return userSchema.findById(_id);
+};
+
+// export const updateUser = (_id, obj) => {
+//   return userSchema.findByIdAndUpdate(_id, obj);
+// };
+// export const deleteUser = (_id) => {
+//   return userSchema.findByIdAndDelete(_id);
+// };
