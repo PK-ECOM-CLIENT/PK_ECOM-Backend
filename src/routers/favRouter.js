@@ -1,19 +1,19 @@
 import express from "express";
 import {
-  addToCart,
-  deleteCartItem,
-  getAllCartItems,
-} from "../models/cart-model/cartModel.js";
+  addToFav,
+  deleteFavItem,
+  getAllFavItems,
+} from "../models/fav-model/fav-model.js";
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
     const { itemId, userId } = req.body;
-    const result = await getAllCartItems(itemId, userId);
+    const result = await getAllFavItems(itemId, userId);
     result.length &&
       res.json({
         status: success,
-        message: "cart items are returned",
+        message: "fav items are returned",
         result,
       });
   } catch (error) {
@@ -23,11 +23,11 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const result = await addToCart(req.body);
+    const result = await addToFav(req.body);
     result._id
       ? res.json({
           status: "success",
-          message: "The item has been added to the cart",
+          message: "The item has been added as favourites",
         })
       : res.json({ status: "error", message: "request unsuccessfull" });
   } catch (error) {
@@ -36,7 +36,7 @@ router.post("/", async (req, res, next) => {
 });
 router.delete("/", async (req, res, next) => {
   try {
-    const result = await deleteCartItem(req.body);
+    const result = await deleteFavItem(req.body);
     result._id
       ? res.json({
           status: "success",

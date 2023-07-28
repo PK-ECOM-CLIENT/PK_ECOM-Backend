@@ -8,7 +8,6 @@ import { comparePassword, hashPassword } from "../helpers/bcryptHelper.js";
 import { v4 as uuidv4 } from "uuid";
 import { verificationEmail } from "../helpers/emailHelper.js";
 const router = express.Router();
-
 router.post("/", async (req, res, next) => {
   try {
     const { password } = req.body;

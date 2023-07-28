@@ -52,5 +52,9 @@ GET http://localhost:8001/api/v1/items
 
 ### Get Single Item
 GET http://localhost:8001/api/v1/items/64a9544bd9c3ea1d09a8e4b2
-### Get  Items by products
-GET http://localhost:8001/api/v1/items/productfilter/64a28df5c7077fa71eec617f
+
+
+
+### post items
+
+Post http://localhost:8001/api/v1/items/
