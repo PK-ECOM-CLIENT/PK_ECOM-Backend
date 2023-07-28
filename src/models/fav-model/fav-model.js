@@ -1,4 +1,4 @@
-import favSchema from "./favSchema";
+import favSchema from "./favSchema.js";
 export const addToFav = (obj) => {
   return favSchema(obj).save();
 };

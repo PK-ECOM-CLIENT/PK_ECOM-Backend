@@ -1,4 +1,4 @@
-import cartSchema from "./cartSchema";
+import cartSchema from "./cartSchema.js";
 export const addToCart = (obj) => {
   return cartSchema(obj).save();
 };
