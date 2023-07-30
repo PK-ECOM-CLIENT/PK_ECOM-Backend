@@ -4,26 +4,37 @@ import {
   deleteFavItem,
   getAllFavItems,
 } from "../models/fav-model/fav-model.js";
+import { userAuth } from "../middlewares/authMiddleware.js";
+import { getItemById } from "../models/items-model/itemsModel.js";
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
+router.get("/", userAuth, async (req, res, next) => {
   try {
-    const { itemId, userId } = req.body;
-    const result = await getAllFavItems(itemId, userId);
-    result.length &&
+    const { _id } = req.userInfo;
+    const favourites = await getAllFavItems(_id);
+    const favs = [];
+
+    for (const item of favourites) {
+      const favItem = await getItemById(item.itemId);
+      favs.push(favItem);
+    }
+    console.log(favs);
+    favs.length &&
       res.json({
-        status: success,
-        message: "fav items are returned",
-        result,
+        status: "success",
+        message: "favs items are returned",
+        favs,
       });
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", userAuth, async (req, res, next) => {
   try {
-    const result = await addToFav(req.body);
+    const { _id } = req.userInfo;
+    const { itemId } = req.body;
+    const result = await addToFav({ userId: _id, itemId });
     result._id
       ? res.json({
           status: "success",

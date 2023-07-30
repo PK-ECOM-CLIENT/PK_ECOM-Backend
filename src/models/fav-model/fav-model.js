@@ -3,8 +3,8 @@ export const addToFav = (obj) => {
   return favSchema(obj).save();
 };
 
-export const getAllFavItems = (itemId, userId) => {
-  return favSchema.find({ id: itemId, userId });
+export const getAllFavItems = (_id) => {
+  return favSchema.find({ userId: _id });
 };
 
 export const deleteFavItem = (obj) => {
