@@ -9,6 +9,10 @@ const favSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    duplicate: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
