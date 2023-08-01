@@ -10,5 +10,5 @@ export const updateFavItem = ({ itemId, userId }, { duplicate: value }) => {
   return favSchema.findOneAndUpdate({ itemId, userId }, { duplicate: value });
 };
 export const deleteFavItem = (obj) => {
-  return favSchema.fineOneAndDelete(obj);
+  return favSchema.findOneAndDelete(obj);
 };

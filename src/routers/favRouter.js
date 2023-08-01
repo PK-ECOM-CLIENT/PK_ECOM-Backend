@@ -19,8 +19,7 @@ router.get("/", userAuth, async (req, res, next) => {
       const favItem = await getItemById(item.itemId);
       favs.push(favItem);
     }
-
-    favs.length &&
+    favs.length >= 0 &&
       res.json({
         status: "success",
         message: "favs items are returned",
@@ -63,9 +62,11 @@ router.post("/", userAuth, async (req, res, next) => {
   }
 });
 
-router.delete("/", async (req, res, next) => {
+router.delete("/:_iid?", userAuth, async (req, res, next) => {
   try {
-    const result = await deleteFavItem(req.body);
+    const _iid = req.params._iid;
+    const _id = req.userInfo;
+    const result = await deleteFavItem({ userId: _id, itemId: _iid });
     result._id
       ? res.json({
           status: "success",
