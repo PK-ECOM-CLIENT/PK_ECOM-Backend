@@ -29,7 +29,7 @@ export const userAuth = async (req, res, next) => {
     }
     res.status(401).json({
       status: "error",
-      message: "unauthorised",
+      message: "Please login first!",
     });
   } catch (error) {
     error.status = 500;
