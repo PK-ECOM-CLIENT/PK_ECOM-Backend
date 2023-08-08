@@ -17,7 +17,7 @@ router.get("/", userAuth, async (req, res, next) => {
 
     for (const item of favourites) {
       const favItem = await getItemById(item.itemId);
-      favs.push(favItem);
+      favItem?._id && favs.push(favItem);
     }
     favs.length >= 0 &&
       res.json({
