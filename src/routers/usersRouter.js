@@ -28,30 +28,34 @@ router.get("/", userAuth, async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { password } = req.body;
-    req.body.password = hashPassword(password);
-    req.body.emailValidationCode = uuidv4();
-    const user = await insertUser(req.body);
-    if (user._id) {
-      res.json({
-        status: "success",
-        message:
-          "We have sent you an email to verify your account, please check your email including the junk folder",
-      });
-      const url = `${process.env.ROOT_DOMAIN}/user/verify-email?c=${user.emailValidationCode}&e=${user.email}`;
-      verificationEmail({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        url,
-      });
-      return;
-    } else {
-      res.json({
+    // const { password } = req.body;
+    // req.body.password = hashPassword(password);
+    // req.body.emailValidationCode = uuidv4();
+    // const user = await insertUser(req.body);
+    // if (user._id) {
+    //   res.json({
+    //     status: "success",
+    //     message:
+    //       "We have sent you an email to verify your account, please check your email including the junk folder",
+    //   });
+    //   const url = `${process.env.ROOT_DOMAIN}/user/verify-email?c=${user.emailValidationCode}&e=${user.email}`;
+    //   verificationEmail({
+    //     firstName: user.firstName,
+    //     lastName: user.lastName,
+    //     email: user.email,
+    //     url,
+    //   });
+    //   return;
+    // } else {
+    //   res.json({
+    //     status: "error",
+    //     message: "Request was unsuccessful,  try again later",
+    //   });
+    // }
+    res.json({
         status: "error",
-        message: "Request was unsuccessful,  try again later",
+        message: "Registering new users service is unauthorised at the moment",
       });
-    }
   } catch (error) {
     if (error.message.includes("E11000 duplicate key error collection")) {
       error.status = 200;
