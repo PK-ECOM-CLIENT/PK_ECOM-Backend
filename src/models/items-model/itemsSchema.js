@@ -76,6 +76,11 @@ const itemSchema = new mongoose.Schema(
       max: 5,
       default: 5,
     },
+    filterName: {
+      type: String,
+      default: "",
+    },
+    filters: [],
   },
   { timestamps: true }
 );
