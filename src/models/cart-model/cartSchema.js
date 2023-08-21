@@ -9,10 +9,17 @@ const cartSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    price: {
-      type: Number,
+    duplicate: {
+      type: Boolean,
+      default: true,
+    },
+    filter: {
+      type: String,
+      default: "",
+    },
+    count: {
+      type: String,
       required: true,
-      default: 0,
     },
   },
   { timestamps: true }

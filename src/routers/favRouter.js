@@ -43,7 +43,7 @@ router.post("/", userAuth, async (req, res, next) => {
     if (update?._id) {
       return res.json({
         status: "success",
-        message: "The item is already in your favorites list",
+        message: "The item is already in your favorites.",
       });
     } else {
       const result = await addToFav({ userId: _id, itemId });
@@ -62,7 +62,7 @@ router.post("/", userAuth, async (req, res, next) => {
   }
 });
 
-router.delete("/:_iid?", userAuth, async (req, res, next) => {
+router.delete("/:_iid", userAuth, async (req, res, next) => {
   try {
     const _iid = req.params._iid;
     const _id = req.userInfo;
