@@ -11,17 +11,23 @@ const router = express.Router();
 
 router.get("/", userAuth, async (req, res, next) => {
   try {
+    console.log(req.body);
     const { _id } = req.userInfo;
-    // const { itemId, userId } = req.body;
     const cartItems = await getAllCartItems(_id);
     const carts = [];
-    for (const item in cartItems) {
+    for (const item of cartItems) {
       const cartItem = await getItemById(item.itemId);
-      cartItem?._id && carts.push(cartItem);
+      const parsedItem = JSON.parse(JSON.stringify(cartItem));
+      if (parsedItem?._id) {
+        parsedItem.count = item.count;
+        parsedItem.filter = item.filter;
+        carts.push(parsedItem);
+      }
+      console.log(carts);
     }
     carts.length >= 0 &&
       res.json({
-        status: success,
+        status: "success",
         message: "cart items are returned",
         carts,
       });

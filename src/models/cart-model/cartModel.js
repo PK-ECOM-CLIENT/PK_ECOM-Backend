@@ -12,5 +12,5 @@ export const deleteCartItem = (obj) => {
 };
 // update used to see if the item is already in the cart
 export const updateCartItem = ({ itemId, userId }, { duplicate: value }) => {
-  return favSchema.findOneAndUpdate({ itemId, userId }, { duplicate: value });
+  return cartSchema.findOneAndUpdate({ itemId, userId }, { duplicate: value });
 };
