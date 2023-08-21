@@ -8,7 +8,7 @@ export const getAllCartItems = (_id) => {
 };
 
 export const deleteCartItem = (obj) => {
-  return cartSchema.fineOneAndDelete(obj);
+  return cartSchema.findOneAndDelete(obj);
 };
 // update used to see if the item is already in the cart
 export const updateCartItem = ({ itemId, userId }, { duplicate: value }) => {

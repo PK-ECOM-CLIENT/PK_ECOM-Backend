@@ -67,7 +67,7 @@ router.post("/", userAuth, async (req, res, next) => {
 });
 router.delete("/:_iid", userAuth, async (req, res, next) => {
   try {
-    const _iid = req.params._id;
+    const _iid = req.params._iid;
     const _id = req.userInfo;
     const result = await deleteCartItem({ userId: _id, itemId: _iid });
     result._id
