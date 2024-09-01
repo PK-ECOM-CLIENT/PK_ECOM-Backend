@@ -40,11 +40,12 @@ router.post("/", userAuth, async (req, res, next) => {
   try {
     const { _id } = req.userInfo;
     const { count, filter, itemId } = req.body;
-    // Check if the item is already in the user's favorites
+    // Check if the item is already in the user's carts
     const update = await updateCartItem(
-      { itemId, userId: _id },
+      { itemId, userId: _id,filter },
       { duplicate: true }
     );
+    console.log(update);
     if (update?._id) {
       return res.json({
         status: "success",

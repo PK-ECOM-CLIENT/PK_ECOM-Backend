@@ -11,6 +11,12 @@ export const deleteCartItem = (obj) => {
   return cartSchema.findOneAndDelete(obj);
 };
 // update used to see if the item is already in the cart
-export const updateCartItem = ({ itemId, userId }, { duplicate: value }) => {
-  return cartSchema.findOneAndUpdate({ itemId, userId }, { duplicate: value });
+export const updateCartItem = (
+  { itemId, userId, filter },
+  { duplicate: value }
+) => {
+  return cartSchema.findOneAndUpdate(
+    { itemId, userId, filter },
+    { duplicate: value }
+  );
 };
