@@ -43,23 +43,33 @@ router.post("/", async (req, res, next) => {
     });
 
     // Adding delivery charge as a separate line item if it exists
-    if (deliveryCharge) {
-      lineItems.push({
-        price_data: {
-          currency: "aud",
-          product_data: {
-            name: "Delivery Charge",
-          },
-          unit_amount: Math.ceil(deliveryCharge * 100), // Make sure it's in cents
-        },
-        quantity: 1, // Since delivery is a single cost
-      });
-    }
-
     // Creating the Stripe checkout session with the new line items
     const session = await stripeInitiation.checkout.sessions.create({
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "afterpay_clearpay", "zip"],
       line_items: lineItems,
+      billing_address_collection: "required", // Require billing address
+      shipping_address_collection: {
+        allowed_countries: ["AU"], // Specify allowed countries for shipping address
+      },
+      // If you want to add predefined shipping rates, you can use `shipping_options`
+      shipping_options: deliveryCharge
+        ? [
+            {
+              shipping_rate_data: {
+                type: "fixed_amount",
+                fixed_amount: {
+                  amount: Math.ceil(deliveryCharge * 100),
+                  currency: "aud",
+                },
+                display_name: "Standard Shipping",
+                delivery_estimate: {
+                  minimum: { unit: "business_day", value: 7 },
+                  maximum: { unit: "business_day", value: 10 },
+                },
+              },
+            },
+          ]
+        : undefined,
       mode: "payment",
       success_url: "http://localhost:3000/",
       cancel_url:
