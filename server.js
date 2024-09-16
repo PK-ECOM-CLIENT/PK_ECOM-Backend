@@ -20,6 +20,7 @@ import itemsRouter from "./src/routers/itemsRouter.js";
 import usersRouter from "./src/routers/usersRouter.js";
 import cartRouter from "./src/routers/cartRouter.js";
 import favRouter from "./src/routers/favRouter.js";
+import paymentRouter from "./src/routers/paymentRouter.js";;
 
 app.use("/api/v1/categories", categoriesRouter);
 app.use("/api/v1/products", productsRouter);
@@ -27,6 +28,7 @@ app.use("/api/v1/items", itemsRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/favs", favRouter);
+app.use("/api/v1/payment",paymentRouter)
 
 app.use("/", (req, res, next) => {
   res.json({
