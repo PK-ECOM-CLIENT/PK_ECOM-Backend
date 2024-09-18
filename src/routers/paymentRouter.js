@@ -71,7 +71,7 @@ router.post("/", async (req, res, next) => {
           ]
         : undefined,
       mode: "payment",
-      success_url: "http://localhost:3000/",
+      success_url: "http://localhost:3000/paymentsuccessful",
       cancel_url:
         "http://localhost:3000/categories/64dac105487491a46c1b322b/products/64dac1f3487491a46c1b3712",
     });
