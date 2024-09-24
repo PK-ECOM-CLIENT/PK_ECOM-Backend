@@ -71,9 +71,8 @@ router.post("/", async (req, res, next) => {
           ]
         : undefined,
       mode: "payment",
-      success_url: process.env.ROOT_DOMAIN,
-      cancel_url:
-        "http://localhost:3000/categories/64dac105487491a46c1b322b/products/64dac1f3487491a46c1b3712",
+      success_url: process.env.ROOT_DOMAIN + "paymentsuccessful",
+      cancel_url: process.env.ROOT_DOMAIN + "paymentfailed",
     });
 
     // Sending the session ID back to the client
