@@ -71,8 +71,8 @@ router.post("/", async (req, res, next) => {
           ]
         : undefined,
       mode: "payment",
-      success_url: process.env.ROOT_DOMAIN + "paymentsuccessful",
-      cancel_url: process.env.ROOT_DOMAIN + "paymentfailed",
+      success_url: process.env.ROOT_DOMAIN + "/paymentsuccessful",
+      cancel_url: process.env.ROOT_DOMAIN + "/paymentfailed",
     });
 
     // Sending the session ID back to the client
