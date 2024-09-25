@@ -1,9 +1,10 @@
 import express from "express";
 import stripe from "stripe";
+import { userAuth } from "../middlewares/authMiddleware.js";
 const stripeInitiation = stripe(process.env.STRIPE_SECRET);
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/", userAuth,async (req, res, next) => {
   try {
     const { products, deliveryCharge, gstRate } = req.body;
 
