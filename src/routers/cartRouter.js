@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.get("/", userAuth, async (req, res, next) => {
   try {
-    console.log(req.body);
     const { _id } = req.userInfo;
     const cartItems = await getAllCartItems(_id);
     const carts = [];
@@ -23,7 +22,6 @@ router.get("/", userAuth, async (req, res, next) => {
         parsedItem.filter = item.filter;
         carts.push(parsedItem);
       }
-      console.log(carts);
     }
     carts.length >= 0 &&
       res.json({
@@ -45,7 +43,6 @@ router.post("/", userAuth, async (req, res, next) => {
       { itemId, userId: _id, filter },
       { duplicate: true }
     );
-    console.log(update);
     if (update?._id) {
       return res.json({
         status: "success",

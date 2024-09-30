@@ -14,7 +14,6 @@ router.get("/:_iid?", async (req, res, next) => {
       message: "items fetched",
       items,
     });
-    console.log(items)
   } catch (error) {
     next(error);
   }

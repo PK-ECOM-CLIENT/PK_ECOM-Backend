@@ -70,7 +70,6 @@ router.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
     //   find the user on the basis of given email
     const user = await findOneUser({ email });
-    console.log(user);
     if (user?._id) {
       if (user.status !== "active") {
         return res.json({
@@ -114,7 +113,6 @@ router.patch("/verify-email", async (req, res, next) => {
         emailValidationCode: "",
       }
     );
-    console.log(user);
     user?._id
       ? res.json({
           status: "success",

@@ -29,7 +29,6 @@ router.get("/categoriesfilter/:_cid", async (req, res, next) => {
       message: "products fetched",
       products,
     });
-    console.log(products);
   } catch (error) {
     next(error);
   }
