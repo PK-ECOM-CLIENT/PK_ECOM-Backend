@@ -1,12 +1,15 @@
 import express from "express";
 import stripe from "stripe";
 import { userAuth } from "../middlewares/authMiddleware.js";
-import { checkItemDetails } from "../models/items-model/itemsModel.js";
+import {
+  checkItemDetails,
+  decreaseItemQuantity,
+} from "../models/items-model/itemsModel.js";
 
 const stripeInitiation = stripe(process.env.STRIPE_SECRET);
 const router = express.Router();
 
-router.post("/",userAuth, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { products, deliveryCharge, gstRate } = req.body;
 
@@ -17,85 +20,77 @@ router.post("/",userAuth, async (req, res, next) => {
       )
     );
 
-    // Check if any validation failed and return the specific error message
     const failedValidation = validationResults.find(
       (result) => !result.success
     );
     if (failedValidation) {
-      // Send the error message to the frontend
       return res.status(400).json({
-        status:"error",
-        message: failedValidation.message
+        status: "error",
+        message: failedValidation.message,
       });
     }
 
-    // Calculate the total price of products without GST
     const totalPriceWithoutGST = products.reduce((acc, product) => {
       return acc + product.price * product.count;
     }, 0);
 
-    // Calculate GST based on the total price
     const gstAmount = Math.ceil(gstRate * totalPriceWithoutGST);
 
-    // Create line items for the products (without GST)
-    const lineItems = products.map((product) => {
-      return {
-        price_data: {
-          currency: "aud",
-          product_data: {
-            name: product.name,
-            images: [product.thumbnail],
-          },
-          unit_amount: Math.round(product.price * 100), // Stripe accepts amounts in cents
-        },
-        quantity: product.count,
-      };
-    });
-
-    // Adding GST as a separate line item
-    lineItems.push({
+    const lineItems = products.map((product) => ({
       price_data: {
         currency: "aud",
         product_data: {
-          name: "GST",
+          name: product.name,
+          images: [product.thumbnail],
         },
-        unit_amount: Math.ceil(gstAmount * 100), // Make sure it's in cents
+        unit_amount: Math.round(product.price * 100),
       },
-      quantity: 1, // GST is a single cost for the total
+      quantity: product.count,
+    }));
+
+    lineItems.push({
+      price_data: {
+        currency: "aud",
+        product_data: { name: "GST" },
+        unit_amount: Math.ceil(gstAmount * 100),
+      },
+      quantity: 1,
     });
 
-    // Adding delivery charge as a separate line item if it exists
     if (deliveryCharge) {
       lineItems.push({
         price_data: {
           currency: "aud",
-          product_data: {
-            name: "Delivery Charge",
-          },
-          unit_amount: Math.ceil(deliveryCharge * 100), // In cents
+          product_data: { name: "Delivery Charge" },
+          unit_amount: Math.ceil(deliveryCharge * 100),
         },
         quantity: 1,
       });
     }
 
-    // Creating the Stripe checkout session with the new line items
     const session = await stripeInitiation.checkout.sessions.create({
       payment_method_types: ["card", "afterpay_clearpay", "zip"],
       line_items: lineItems,
-      billing_address_collection: "required", // Require billing address
-      shipping_address_collection: {
-        allowed_countries: ["AU"], // Specify allowed countries for shipping address
-      },
+      billing_address_collection: "required",
+      shipping_address_collection: { allowed_countries: ["AU"] },
       mode: "payment",
       success_url: process.env.ROOT_DOMAIN + "/paymentsuccessful",
       cancel_url: process.env.ROOT_DOMAIN + "/paymentfailed",
     });
 
-    // Sending the session ID back to the client
+    // If the session is successfully created
+    if (session.id) {
+      // Decrease the quantity of each product in the database
+      await Promise.all(
+        products.map(async (product) => {
+          await decreaseItemQuantity(product._id, product.count);
+        })
+      );
+    }
+
     res.status(200).json({ sessionId: session.id });
   } catch (error) {
     next(error);
   }
 });
-
 export default router;
