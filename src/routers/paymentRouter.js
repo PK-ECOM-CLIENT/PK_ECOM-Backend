@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   try {
     const { products, deliveryCharge, gstRate } = req.body;
-
+    console.log(products);
     // Validate each product's price and quantity asynchronously
     const validationResults = await Promise.all(
       products.map((item) =>
@@ -77,6 +77,7 @@ router.post("/", async (req, res, next) => {
       success_url: process.env.ROOT_DOMAIN + "/paymentsuccessful",
       cancel_url: process.env.ROOT_DOMAIN + "/paymentfailed",
     });
+    console.log(session);
 
     // If the session is successfully created
     if (session.id) {
