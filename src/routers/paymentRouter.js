@@ -1,10 +1,7 @@
 import express from "express";
 import stripe from "stripe";
 import { userAuth } from "../middlewares/authMiddleware.js";
-import {
-  checkItemDetails,
-  decreaseItemQuantity,
-} from "../models/items-model/itemsModel.js";
+import { checkItemDetails } from "../models/items-model/itemsModel.js";
 
 const stripeInitiation = stripe(process.env.STRIPE_SECRET);
 const router = express.Router();
@@ -12,7 +9,6 @@ const router = express.Router();
 router.post("/", async (req, res, next) => {
   try {
     const { products, deliveryCharge, gstRate } = req.body;
-    console.log(products);
     // Validate each product's price and quantity asynchronously
     const validationResults = await Promise.all(
       products.map((item) =>
@@ -77,17 +73,6 @@ router.post("/", async (req, res, next) => {
       success_url: process.env.ROOT_DOMAIN + "/paymentsuccessful",
       cancel_url: process.env.ROOT_DOMAIN + "/paymentfailed",
     });
-    console.log(session);
-
-    // If the session is successfully created
-    // if (session.id) {
-    //   // Decrease the quantity of each product in the database
-    //   await Promise.all(
-    //     products.map(async (product) => {
-    //       await decreaseItemQuantity(product._id, product.count);
-    //     })
-    //   );
-    // }
 
     res.status(200).json({ sessionId: session.id });
   } catch (error) {
