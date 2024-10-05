@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 8001;
 // mongodb connection
 import { dbConnection } from "./src/config/dbConfig.js";
 dbConnection();
+//webhook parser
+app.use("/api/v1/stripewebhook", stripeHook);
 // middlewares
 app.use(cors());
 app.use(helmet());
@@ -30,7 +32,6 @@ app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/favs", favRouter);
 app.use("/api/v1/payment", paymentRouter);
-app.use("/api/v1/stripewebhook", stripeHook);
 
 app.use("/", (req, res, next) => {
   res.json({

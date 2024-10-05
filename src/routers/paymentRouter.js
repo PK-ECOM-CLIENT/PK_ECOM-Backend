@@ -80,14 +80,14 @@ router.post("/", async (req, res, next) => {
     console.log(session);
 
     // If the session is successfully created
-    if (session.id) {
-      // Decrease the quantity of each product in the database
-      await Promise.all(
-        products.map(async (product) => {
-          await decreaseItemQuantity(product._id, product.count);
-        })
-      );
-    }
+    // if (session.id) {
+    //   // Decrease the quantity of each product in the database
+    //   await Promise.all(
+    //     products.map(async (product) => {
+    //       await decreaseItemQuantity(product._id, product.count);
+    //     })
+    //   );
+    // }
 
     res.status(200).json({ sessionId: session.id });
   } catch (error) {
